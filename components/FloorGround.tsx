@@ -1,9 +1,18 @@
 'use client'
 
 import React, { useState } from 'react';
-
+interface Room {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: string;
+  isStair?: boolean;
+}
 function FloorGround() {
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
 
   const rooms = [
     { id: 'Adm. off.', name: 'Adm. off.', x: 120, y: 13, width: 70, height: 90, color: '#fff3e0' },
@@ -26,7 +35,7 @@ function FloorGround() {
     { id: 'Stair-LT2', name: 'Stair', x: 295, y: 14, width: 18, height: 110, color: '#d4af37', isStair: true },
   ];
 
-  const getRoomColor = (room) => {
+  const getRoomColor = (room:Room) => {
     if (selectedRoom === room.id) {
       return '#ffd54f';
     }

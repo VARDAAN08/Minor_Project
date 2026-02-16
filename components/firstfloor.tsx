@@ -1,9 +1,20 @@
 'use client'
 
 import React, { useState } from 'react';
+interface Room {
+  id: string;
+  name: string;
+  x: number;
 
+
+  y: number;
+  width: number;
+  height: number;
+  color: string;
+  isStair?: boolean;
+}
 function Firstfloor() {
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
 
   const rooms = [
     // Top row - 1st Floor
@@ -50,7 +61,7 @@ function Firstfloor() {
     { id: 'mughal-garden', name: 'Mughal Garden', x: 20, y: 390, width: 840, height: 130, color: '#d4edda' },
   ];
 
-  const getRoomColor = (room) => {
+  const getRoomColor = (room:Room) => {
     if (selectedRoom === room.id) {
       return '#ffd54f';
     }

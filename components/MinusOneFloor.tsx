@@ -1,8 +1,17 @@
 'use client'
 import React, { useState } from 'react';
-
+interface Room {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: string;
+  isStair?: boolean;
+}
 function MinusOneFloor() {
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
 
   const rooms = [
     { id: 'Basement', name: 'Basement', x: 13, y: 328, width: 856, height: 200, color: '#e3f2fd' },
@@ -14,7 +23,7 @@ function MinusOneFloor() {
     { id: 'Stair', name: 'Stair', x: 790, y: 27, width: 79, height: 170, color: '#d4af37' },
   ];
 
-  const getRoomColor = (room) => {
+  const getRoomColor = (room:Room) => {
     if (selectedRoom === room.id) {
       return '#ffd54f';
     }
