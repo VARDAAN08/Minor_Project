@@ -5,9 +5,10 @@ import Firstfloor from "../../components/firstfloor"
 import FloorGround from "../../components/FloorGround"
 import SecondFloor from "../../components/SecondFloor"
 import MinusOneFloor from "../../components/MinusOneFloor"
+import ThirdFloor from "../../components/thirdfloor"
 
 function Page() {
-  const [floor, setFloor] = useState<'first' | 'second' | 'ground' | 'minus1'>('first')
+  const [floor, setFloor] = useState<'first' | 'second' | 'third' | 'ground' | 'minus1'>('first')
 
   return (
     <div className='h-screen w-screen flex flex-col'>
@@ -23,6 +24,12 @@ function Page() {
           onClick={() => setFloor('second')}
         >
           2nd Floor
+        </button>
+        <button
+          className={`px-3 py-1 rounded ${floor === 'third' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+          onClick={() => setFloor('third')}
+        >
+          3rd Floor
         </button>
         <button
           className={`px-3 py-1 rounded ${floor === 'ground' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
@@ -41,8 +48,9 @@ function Page() {
       <div className='flex-1'>
         {floor === 'first' && <Firstfloor />}
         {floor === 'second' && <SecondFloor />}
+        {floor === 'third' && <ThirdFloor />}
         {floor === 'ground' && <FloorGround />}
-          {floor === 'minus1' && <MinusOneFloor />}
+        {floor === 'minus1' && <MinusOneFloor />}
       </div>
     </div>
   )
