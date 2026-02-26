@@ -48,58 +48,71 @@ function SecondFloor({ onFloorChange }: SecondFloorProps) {
   };
 
   const rooms: Room[] = [
-    // Top row - 2nd Floor
-    { id: 'cl9', name: 'CL 9', x: 20, y: 20, width: 80, height: 70, color: '#f3e5f5', door: 'right' },
-    { id: 'placement-cell', name: 'T & P Cell', x: 110, y: 55, width: 60, height: 35, color: '#fff3e0', door: 'right' },
-    { id: 'pharma-cell', name: 'HR Office', x: 110, y: 20, width: 60, height: 35, color: '#fff3e0', door: 'right' },
-    { id: 'washroom-boys', name: 'BW', x: 180, y: 20, width: 50, height: 35, color: '#e0f2f1', door: 'right' },
+    // Top row - 2nd Floor (6 equal blocks + lift)
+    { id: 'DBT', name: 'DBT', x: 20, y: 20, width: 100, height: 90, color: '#f3e5f5', door: 'right' },
+    
+    { id: 'lift', name: 'Lift', x: 160, y: 20, width: 50, height: 35, color: '#ede7f6' },
 
-    { id: 'cc-10-11', name: 'CL 10 & 11', x: 250, y: 10, width: 160, height: 37, color: '#f3e5f5', door: 'bottom' },
-    { id: 'tr1', name: 'TR 1', x: 250, y: 50, width: 68, height: 35, color: '#e3f2fd', door: 'bottom' },
-    { id: 'tr2', name: 'TR 2', x: 320, y: 50, width: 68, height: 35, color: '#e3f2fd', door: 'bottom' },
-    // Stair below TR2 - goes down to first floor
-    { id: 'Stair-BW', name: 'Stair ↓', x: 320, y: 85, width: 68, height: 35, color: '#d4af37', isStair: true, stairDirection: -1 },
+    // 6 equally spaced blocks (each ~100 wide with ~10 gap)
+    { id: 'block-1', name: 'Block 1', x: 270, y: 10, width: 120, height: 80, color: '#f3e5f5', door: 'bottom' },
+    { id: 'STAFF ROOM', name: 'STAFF ROOM', x: 390, y: 10, width: 120, height: 80, color: '#e3f2fd', door: 'bottom' },
+    { id: 'block-3', name: 'Block 3', x: 510, y: 10, width: 120, height: 80, color: '#f1f8e9', door: 'bottom' },
+    
+    { id: 'cr9', name: 'CR 9', x: 680, y: 10, width: 90, height: 80, color: '#c8e6c9', door: [{ position: 'bottom', offset: -20 }, { position: 'bottom', offset: 20 }] },
+    { id: 'cr10', name: 'CR 10', x: 770, y: 10, width: 90, height: 80, color: '#c8e6c9', door: [{ position: 'bottom', offset: -20 }, { position: 'bottom', offset: 20 }] },
 
-    { id: 'board-room', name: 'Board Room', x: 415, y: 13, width: 100, height: 37, color: '#f1f8e9', door: 'bottom' },
-    { id: 'staff-room', name: 'Staff Room', x: 516, y: 14, width: 100, height: 37, color: '#fce4ec', door: 'bottom' },
 
-    { id: 'tr3', name: 'TR 3', x: 510, y: 50, width: 53, height: 35, color: '#e3f2fd', door: 'bottom' },
-    { id: 'tr4', name: 'TR 4', x: 565, y: 50, width: 53, height: 35, color: '#e3f2fd', door: 'bottom' },
+    // Stairs - copied from first floor, aligned equally
+    { id: 'Stair-BW', name: 'Stair ↓', x: 250, y: 107, width: 120, height: 20, color: '#d4af37', isStair: true, stairDirection: -1 },
+    { id: 'Stair-Lobby', name: 'Stair ↓', x: 510, y: 107, width: 120, height: 20, color: '#d4af37', isStair: true, stairDirection: -1 },
 
-    { id: 'lobby', name: 'Lobby', x: 620, y: 15, width: 58, height: 75, color: '#f0f4c3' },
-    // Stair downside of Lobby - goes down to first floor
-    { id: 'Stair-Lobby', name: 'Stair ↓', x: 620, y: 90, width: 58, height: 35, color: '#d4af37', isStair: true, stairDirection: -1 },
-
-    { id: 'cr11', name: 'CR 11', x: 680, y: 15, width: 90, height: 75, color: '#c8e6c9', door: [{ position: 'bottom', offset: -20 }, { position: 'bottom', offset: 20 }] },
-    { id: 'cr12', name: 'CR 12', x: 770, y: 15, width: 90, height: 75, color: '#c8e6c9', door: [{ position: 'bottom', offset: -20 }, { position: 'bottom', offset: 20 }] },
-
-    // Middle corridor area
-    { id: 'corridor-top', name: 'Corridor', x: 20, y: 130, width: 840, height: 60, color: '#f5f5f5' },
+    // Middle area - gaps become corridors, corridors become blank (copied from first floor)
+    { id: 'corridor-gap1', name: 'Corridor', x: 180, y: 130, width: 70, height: 120, color: '#f5f5f5' },
+    { id: 'corridor-gap2', name: 'Corridor', x: 630, y: 130, width: 50, height: 120, color: '#f5f5f5' },
+    
+    // Light grey blank spaces with boundary (former corridor areas)
+    { id: 'space-left', name: '', x: 20, y: 130, width: 160, height: 120, color: '#e0e0e0' },
+    { id: 'space-middle', name: '', x: 250, y: 130, width: 380, height: 120, color: '#e0e0e0' },
+    { id: 'space-right', name: '', x: 680, y: 130, width: 180, height: 120, color: '#e0e0e0' },
 
     // Bottom section
-    { id: 'lt3', name: 'TR 7', x: 20, y: 290, width: 90, height: 90, color: '#e1f5fe', door: 'right' },
-    { id: 'cr8', name: 'TR 6', x: 200, y: 290, width: 90, height: 90, color: '#c8e6c9', door: 'top' },
-    { id: 'cr7', name: 'TR 5', x: 290, y: 290, width: 80, height: 90, color: '#c8e6c9', door: 'top' },
+    { id: 'cif', name: 'CIF', x: 10, y: 290, width: 30, height: 90, color: '#e1f5fe', door: [{ position: 'right', offset: -30 }] },
 
-    { id: 'ECE LAB2', name: 'ECE LAB', x: 390, y: 290, width: 90, height: 90, color: '#c8e6c9', door: 'top' },
-    { id: 'ECE LAB1', name: 'ECE LAB', x: 480, y: 290, width: 90, height: 90, color: '#c8e6c9', door: 'top' },
-    { id: 'bw', name: 'bw', x: 570, y: 310, width: 60, height: 70, color: '#e0f2f1' },
+    { id: 'lt3', name: 'TR 7', x: 40, y: 320, width: 60, height: 60, color: '#e1f5fe', door: 'top' },
+    { id: 'TR6', name: 'TR 6', x: 100, y: 320, width: 60, height: 60, color: '#c8e6c9', door: 'top' },
 
-    { id: 'lab1', name: 'BIOINFO. LAB', x: 630, y: 290, width: 90, height: 90, color: '#ffecb3', door: 'top' },
-    { id: 'server-room', name: 'Server Room', x: 720, y: 310, width: 60, height: 70, color: '#e0f2f1', door: 'left' },
-    { id: 'lab2', name: 'CL 1', x: 780, y: 240, width: 90, height: 140, color: '#ffecb3', door:{ position: 'left', offset: -35 } },
+    { id: 'cr8', name: 'TR 5', x: 160, y: 320, width: 60, height: 60, color: '#c8e6c9', door: 'top' },
+
+    { id: 'RR', name: 'RR', x: 220, y: 290, width: 30, height: 90, color: '#e0f2f1', door: [{ position: 'left', offset: -30 }]  },
+
+    { id: 'GW', name: 'GW', x: 250, y: 310, width: 40, height: 70, color: '#e0f2f1' },
+
+    { id: 'cr7', name: 'ECE LAB 3', x: 290, y: 290, width: 80, height: 90, color: '#c8e6c9', door: 'top' },
+    { id: 'ECE LAB4', name: 'ECE LAB 4', x: 370, y: 290, width: 80, height: 90, color: '#c8e6c9', door: 'top' },
+
+    { id: 'SRS', name: 'SRS ROOM', x: 450, y: 340, width: 30, height: 40, color: '#c8e6c9', door: 'top' },
+    { id: 'ECE LAB5', name: 'ECE LAB 5', x: 480, y: 290, width: 80, height: 90, color: '#c8e6c9', door: 'top' },
+    { id: 'ECE LAB1', name: 'BIOTECH LAB', x: 560, y: 290, width: 80, height: 90, color: '#c8e6c9', door: 'top' },
+    { id: 'bw', name: 'bw', x: 640, y: 310, width: 40, height: 70, color: '#e0f2f1' },
+
+    { id: 'lab1', name: 'BIOINFO. LAB', x: 680, y: 290, width: 80, height: 90, color: '#ffecb3', door: 'top' },
+    { id: 'server-room', name: 'SR', x: 760, y: 310, width: 30, height: 70, color: '#e0f2f1', door: 'left' },
+    { id: 'cl1', name: 'CL 1', x: 790, y: 240, width: 70, height: 140, color: '#ffecb3', door:{ position: 'left', offset: -35 } },
 
     // Mughal Garden area
     { id: 'mughal-garden', name: 'Mughal Garden', x: 20, y: 390, width: 840, height: 130, color: '#d4edda' },
   ];
 
   const isSelectableRoom = (roomId: string) => {
-    // Only TR, CR, LT, Labs, CL, Server Room, and Board Room are selectable
+    // Only TR, CR, LT, Labs, CL, Block, ECE, Biotech, Server Room, and Board Room are selectable
     return roomId.toLowerCase().startsWith('tr') ||
            roomId.toLowerCase().startsWith('cr') ||
            roomId.toLowerCase().startsWith('lt') ||
            roomId.toLowerCase().startsWith('lab') ||
            roomId.toLowerCase().startsWith('cl') ||
+           roomId.toLowerCase().startsWith('block') ||
+           roomId.toLowerCase().startsWith('ece') ||
+           roomId.toLowerCase().includes('biotech') ||
            roomId.toLowerCase().includes('server') ||
            roomId.toLowerCase().includes('board');
   };

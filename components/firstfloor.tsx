@@ -55,7 +55,7 @@ function Firstfloor({ onFloorChange }: FirstfloorProps) {
     { id: 'washroom-boys', name: 'BW', x: 170, y: 10, width: 50, height: 35, color: '#e0f2f1', door: 'right' },
     { id: 'lift', name: 'Lift', x: 170, y: 45, width: 50, height: 18, color: '#ede7f6' },
     
-    { id: 'cc-10-11', name: 'CL 10 & 11', x: 250, y: 10, width: 160, height: 37, color: '#f3e5f5', door: 'bottom' },
+    { id: 'cL-10-11', name: 'CL 10 & 11', x: 250, y: 10, width: 160, height: 37, color: '#f3e5f5', door: 'bottom' },
     { id: 'tr1', name: 'TR 1', x: 250, y: 50, width: 68, height: 35, color: '#e3f2fd', door: 'bottom' },
     { id: 'tr2', name: 'TR 2', x: 320, y: 50, width: 68, height: 35, color: '#e3f2fd', door: 'bottom' },
     // Stair below TR2 - goes down to ground floor
