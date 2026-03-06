@@ -12,7 +12,7 @@ interface Room {
   clickable?: boolean;
 }
 function MinusOneFloor() {
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [selectedRooms, setSelectedRooms] = useState<Set<string>>(new Set());
 
   const rooms: Room[] = [
     { id: 'Basement', name: 'Basement', x: 13, y: 328, width: 856, height: 200, color: '#e3f2fd', clickable: false },
@@ -24,26 +24,30 @@ function MinusOneFloor() {
     { id: 'Stair', name: 'Stair', x: 790, y: 27, width: 79, height: 170, color: '#d4af37', clickable: false },
   ];
 
-  const getRoomColor = (room: Room) => {
-    if (room.clickable && selectedRoom === room.id) {
-      return '#ffd54f';
-    }
-    return room.color;
-  };
+  const getRoomColor = (room: Room) =>
+    room.clickable && selectedRooms.has(room.id) ? '#ffd54f' : room.color;
 
   const handleRoomClick = (room: Room) => {
     if (!room.clickable) return;
-    setSelectedRoom(selectedRoom === room.id ? null : room.id);
+    const newSelected = new Set(selectedRooms);
+    if (newSelected.has(room.id)) {
+      newSelected.delete(room.id);
+    } else {
+      newSelected.add(room.id);
+    }
+    setSelectedRooms(newSelected);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
       <div className="max-w-7xl mx-auto">
+
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-800 mb-2">Basement (-1) Floor Plan</h1>
           <p className="text-lg text-slate-600">EduNav Campus Navigation System</p>
         </div>
 
+        {/* SVG Floor Plan */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <div className="flex justify-center">
             <svg width="900" height="600" className="border-2 border-slate-300 rounded-lg bg-white shadow-md">
@@ -56,26 +60,19 @@ function MinusOneFloor() {
 
               {rooms.map(room => {
                 const isStair = room.id === 'Stair';
-                const isSelected = room.clickable && selectedRoom === room.id;
-
+                const isSelected = room.clickable && selectedRooms.has(room.id);
                 return (
-                  <g key={room.id}>
+                  <g key={room.id} onClick={() => handleRoomClick(room)} className={room.clickable ? 'cursor-pointer' : 'cursor-default'}>
                     <rect
-                      x={room.x}
-                      y={room.y}
-                      width={room.width}
-                      height={room.height}
+                      x={room.x} y={room.y}
+                      width={room.width} height={room.height}
                       fill={getRoomColor(room)}
-                      stroke={isSelected ? '#ff6b6b' : '#475569'}
-                      strokeWidth={isSelected ? '3' : '2'}
+                      stroke={isSelected ? '#ef4444' : '#475569'}
+                      strokeWidth={isSelected ? 3 : 1.5}
                       rx="4"
-                      className={`transition-all duration-200 ${room.clickable ? 'cursor-pointer hover:opacity-80' : 'cursor-default'}`}
-                      onClick={() => handleRoomClick(room)}
-                      style={{
-                        filter: isSelected ? 'drop-shadow(0 0 8px rgba(255, 107, 107, 0.5))' : 'none'
-                      }}
+                      className={`transition-all duration-200 ${room.clickable ? 'hover:opacity-80' : ''}`}
+                      style={{ filter: isSelected ? 'drop-shadow(0 0 8px rgba(239,68,68,0.5))' : 'none' }}
                     />
-
                     {isStair && (
                       <>
                         <line x1={room.x} y1={room.y} x2={room.x + room.width} y2={room.y + room.height} stroke="#8b7500" strokeWidth="1" opacity="0.3" />
@@ -83,7 +80,6 @@ function MinusOneFloor() {
                         <line x1={room.x + room.width/2} y1={room.y} x2={room.x + room.width/2} y2={room.y + room.height} stroke="#8b7500" strokeWidth="1" opacity="0.3" />
                       </>
                     )}
-
                     {room.name && (
                       <text
                         x={room.x + room.width / 2}
@@ -91,20 +87,21 @@ function MinusOneFloor() {
                         textAnchor="middle"
                         dominantBaseline="middle"
                         fontSize="14"
+                        fontWeight="600"
                         fill="#1f2937"
                         pointerEvents="none"
+                        className="select-none"
                       >
                         {room.name}
                       </text>
                     )}
-
                     {room.clickable && (
                       <circle
                         cx={room.x + room.width - 10}
                         cy={room.y + 10}
                         r="5"
                         fill="#4caf50"
-                        opacity="0.8"
+                        opacity="0.9"
                         pointerEvents="none"
                       />
                     )}
@@ -120,18 +117,39 @@ function MinusOneFloor() {
           </div>
         </div>
 
+        {/* Selected Rooms Details — same as First Floor */}
+        {selectedRooms.size > 0 && (
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border-l-4 border-red-500">
+            <h2 className="text-xl font-bold text-slate-800 mb-3">Selected Rooms ({selectedRooms.size})</h2>
+            <div className="space-y-2">
+              {rooms.filter(r => selectedRooms.has(r.id)).map(room => (
+                <div key={room.id} className="flex items-center gap-3 p-2 bg-slate-50 rounded">
+                  <div className="w-6 h-6 rounded border-2 border-slate-300" style={{ backgroundColor: room.color }} />
+                  <p className="text-sm">
+                    <span className="font-bold text-slate-700">{room.name}</span>
+                    {room.isStair && <span className="text-amber-600 ml-2">⚠️ Stair</span>}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Legend */}
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-bold text-slate-800 mb-4">Legend</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {rooms.map(room => (
               <div
                 key={room.id}
+                onClick={() => handleRoomClick(room)}
                 className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
                   room.clickable
-                    ? 'border-green-300 cursor-pointer hover:border-green-500 hover:shadow-sm'
+                    ? selectedRooms.has(room.id)
+                      ? 'border-red-400 bg-red-50 cursor-pointer'
+                      : 'border-green-300 hover:border-green-500 cursor-pointer'
                     : 'border-slate-200 cursor-default opacity-60'
                 }`}
-                onClick={() => handleRoomClick(room)}
               >
                 <div className="w-6 h-6 rounded border border-slate-400" style={{ backgroundColor: room.color }} />
                 <span className="text-sm font-medium text-slate-700">{room.name}</span>
@@ -145,16 +163,9 @@ function MinusOneFloor() {
           </p>
         </div>
 
-        {selectedRoom && (
-          <div className="bg-white rounded-lg shadow-lg p-6 mt-6 border-l-4 border-red-500">
-            <h2 className="text-xl font-bold text-slate-800 mb-4">Room Details</h2>
-            {rooms.filter(r => r.id === selectedRoom).map(room => (
-              <div key={room.id} className="space-y-2">
-                <p><span className="font-bold text-slate-700">Name:</span> <span className="text-slate-600">{room.name}</span></p>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="mt-6 text-center text-sm text-slate-500">
+          Last updated: February 2026 | Interactive Floor Plan
+        </div>
       </div>
     </div>
   );
