@@ -69,12 +69,12 @@ function Page() {
 
       {/* Floor Display */}
       <div className='flex-1'>
-        {floor === 'minus1' && <MinusOneFloor />}
-        {floor === 'ground' && <FloorGround />}
-        {floor === 'first' && <FirstFloor />}
-        {floor === 'second' && <SecondFloor />}
-        {floor === 'third' && <ThirdFloor />}
-        {floor === 'fourth' && <FourthFloor />}
+        {floor === 'minus1' && <MinusOneFloor setFloor={setFloor} />}
+        {floor === 'ground' && <FloorGround setFloor={setFloor} />}
+        {floor === 'first' && <FirstFloor setFloor={setFloor} />}
+        {floor === 'second' && <SecondFloor setFloor={setFloor} />}
+        {floor === 'third' && <ThirdFloor setFloor={setFloor} />}
+        {floor === 'fourth' && <FourthFloor setFloor={setFloor} />}
       </div>
     </div>
   )

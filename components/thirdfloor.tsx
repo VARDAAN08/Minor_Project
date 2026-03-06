@@ -1,6 +1,5 @@
 'use client'
 
-// updated ui
 import React, { useState } from 'react';
 
 interface Room {
