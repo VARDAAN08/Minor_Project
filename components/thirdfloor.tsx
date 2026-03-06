@@ -25,8 +25,9 @@ function ThirdFloor() {
     { id: 'Robotics Lab', name: 'Robotics Lab', x: 290, y: 20, width: 95, height: 65, color: '#e0f2f1' },
     { id: 'Server Room Top', name: 'Server Room', x: 390, y: 20, width: 80, height: 65, color: '#f1f8e9' },
     { id: 'Mac lab', name: 'Mac lab', x: 475, y: 20, width: 250, height: 65, color: '#fce4ec' },
-    { id: 'CL12', name: 'CL12', x: 735, y: 20, width: 120, height: 260, color: '#e8eaf6' },
-
+    { id: 'ECE Lab-9', name: 'ECE Lab-9', x: 732, y: 20, width: 55, height: 150, color: '#e8eaf6' },
+    {id:'ECE Lab-8',name:'ECE Lab-8',x:792,y:20,width:55,height:150,color:'#e8eaf6'},
+    {id:'BI project lab',name:'BI Project Lab',x:850,y:20,width:69,height:150,color:'#e8eaf6'},
     // ============ TOP CORRIDOR (y: 95) ============
     { id: 'Corridor-Top', name: 'corridor', x: 120, y: 95, width:608, height: 30, color: '#f5f5f5', isCoridor: true },
 
@@ -65,15 +66,14 @@ function ThirdFloor() {
     // ============ BOTTOM RIGHT SECTION (y: 215) ============
     { id: 'CL4', name: 'CL4', x:465, y: 215, width: 105, height: 70, color: '#e3f2fd' },
     { id: 'CL3', name: 'CL3', x: 576, y: 215, width: 105, height: 70, color: '#e3f2fd' },
+    {id:'CIF',name:'Central Instrumentation Facility',x:732,y:215,width:185,height:70,color:'#e3f2fd'},
 
     // ============ GW - Bottom Right ============
     { id: 'GW', name: 'GW', x: 684, y: 290, width: 45, height: 35, color: '#e0e0e0' },
   ];
 
   const getRoomColor = (room: Room): string => {
-    if (selectedRoom === room.id) {
-      return '#ffd54f';
-    }
+    if (selectedRoom === room.id) return '#ffd54f';
     return room.color;
   };
 
@@ -84,7 +84,9 @@ function ThirdFloor() {
     room.id !== 'Server Room Top' &&
     room.id !== 'Server Room Bottom' &&
     room.id !== 'BW' &&
-    room.id !== 'GW';
+    room.id !== 'GW'&&
+    room.id!=='CIF'&&
+    room.id!=='Faculty Cabin';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
@@ -150,33 +152,9 @@ function ThirdFloor() {
                   {/* Stair pattern (diagonal lines) */}
                   {room.isStair && (
                     <>
-                      <line
-                        x1={room.x}
-                        y1={room.y}
-                        x2={room.x + room.width}
-                        y2={room.y + room.height}
-                        stroke="#8b7500"
-                        strokeWidth="1"
-                        opacity="0.4"
-                      />
-                      <line
-                        x1={room.x + room.width}
-                        y1={room.y}
-                        x2={room.x}
-                        y2={room.y + room.height}
-                        stroke="#8b7500"
-                        strokeWidth="1"
-                        opacity="0.4"
-                      />
-                      <line
-                        x1={room.x + room.width / 2}
-                        y1={room.y}
-                        x2={room.x + room.width / 2}
-                        y2={room.y + room.height}
-                        stroke="#8b7500"
-                        strokeWidth="1"
-                        opacity="0.4"
-                      />
+                      <line x1={room.x} y1={room.y} x2={room.x + room.width} y2={room.y + room.height} stroke="#8b7500" strokeWidth="1" opacity="0.4" />
+                      <line x1={room.x + room.width} y1={room.y} x2={room.x} y2={room.y + room.height} stroke="#8b7500" strokeWidth="1" opacity="0.4" />
+                      <line x1={room.x + room.width/2} y1={room.y} x2={room.x + room.width/2} y2={room.y + room.height} stroke="#8b7500" strokeWidth="1" opacity="0.4" />
                     </>
                   )}
 
@@ -200,6 +178,54 @@ function ThirdFloor() {
             </svg>
           </div>
         </div>
+
+        {/* Legend */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h2 className="text-xl font-bold text-slate-800 mb-4">Legend</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {rooms
+              .filter(room => isInteractive(room))
+              .map(room => (
+                <div
+                  key={room.id}
+                  className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 cursor-pointer hover:border-slate-400 transition-all"
+                  onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
+                >
+                  <div
+                    className="w-5 h-5 rounded border border-slate-400 flex-shrink-0"
+                    style={{ backgroundColor: room.color }}
+                  />
+                  <span className="text-sm font-medium text-slate-700 truncate">
+                    {room.name}
+                  </span>
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Room Details Panel */}
+        {selectedRoom && (
+          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-red-500">
+            <h2 className="text-xl font-bold text-slate-800 mb-4">Room Details</h2>
+            {rooms.map(room =>
+              room.id === selectedRoom ? (
+                <div key={room.id} className="flex items-center gap-3">
+                  <div
+                    className="w-8 h-8 rounded border-2 border-slate-300"
+                    style={{ backgroundColor: room.color }}
+                  />
+                  <p className="text-lg text-slate-700">{room.name}</p>
+                </div>
+              ) : null
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="mt-6 text-center text-sm text-slate-500">
+          <p>Last updated: February 2026 | Interactive Floor Plan</p>
+        </div>
+
       </div>
     </div>
   );
