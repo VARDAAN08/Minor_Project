@@ -44,6 +44,8 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
     { id: 'Stair-LT2', name: 'Stair', x: 295, y: 14, width: 18, height: 110, color: '#d4af37', isStair: true, clickable: false },
   ];
 
+  const clickableRooms = rooms.filter(r => r.clickable);
+
   const getRoomColor = (room: Room) =>
     room.clickable && selectedRooms.has(room.id) ? '#ffd54f' : room.color;
 
@@ -72,7 +74,6 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
   return (
     <div className="min-h-screen p-6" style={{ position: 'relative', overflow: 'hidden' }}>
 
-      {/* Layer 1 — Campus image */}
       <div style={{
         position: 'fixed', inset: 0,
         backgroundImage: 'url("/juitpit2.webp")',
@@ -83,14 +84,12 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
         zIndex: 0,
       }} />
 
-      {/* Layer 2 — Deep blue gradient overlay */}
       <div style={{
         position: 'fixed', inset: 0,
         background: 'linear-gradient(135deg, rgba(5,15,45,0.55) 0%, rgba(10,30,80,0.45) 50%, rgba(20,10,50,0.55) 100%)',
         zIndex: 1,
       }} />
 
-      {/* Gold top accent bar */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0,
         height: '4px',
@@ -99,10 +98,8 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
         boxShadow: '0 0 12px rgba(255,215,0,0.6)',
       }} />
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto pt-2" style={{ position: 'relative', zIndex: 5 }}>
 
-        {/* Header */}
         <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div style={{
@@ -125,7 +122,6 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
             </div>
           </div>
 
-          {/* Pill Button Floor Switcher */}
           <div style={{
             background: 'rgba(255,255,255,0.08)',
             backdropFilter: 'blur(12px)',
@@ -150,12 +146,8 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
                   borderRadius: '999px',
                   fontSize: '12px',
                   fontWeight: 700,
-                  border: f.value === 'ground'
-                    ? '1.5px solid #ffd700'
-                    : '1.5px solid rgba(255,255,255,0.2)',
-                  background: f.value === 'ground'
-                    ? 'linear-gradient(135deg, #b8860b, #ffd700)'
-                    : 'rgba(255,255,255,0.08)',
+                  border: f.value === 'ground' ? '1.5px solid #ffd700' : '1.5px solid rgba(255,255,255,0.2)',
+                  background: f.value === 'ground' ? 'linear-gradient(135deg, #b8860b, #ffd700)' : 'rgba(255,255,255,0.08)',
                   color: f.value === 'ground' ? '#1a1000' : 'rgba(255,255,255,0.75)',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
@@ -261,30 +253,24 @@ function FloorGround({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fi
           </div>
         )}
 
-        {/* Legend */}
+        {/* Legend — only clickable rooms */}
         <div style={glassCard}>
           <h2 className="text-lg font-bold mb-4" style={{ color: '#ffd700' }}>Legend</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {rooms.map(room => (
+            {clickableRooms.map(room => (
               <div key={room.id} onClick={() => handleRoomClick(room)}
                 className="flex items-center gap-3 p-3 rounded-xl transition-all"
                 style={{
-                  background: room.clickable && selectedRooms.has(room.id)
-                    ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.08)',
-                  border: room.clickable && selectedRooms.has(room.id)
-                    ? '1px solid rgba(239,68,68,0.7)'
-                    : room.clickable
-                    ? '1px solid rgba(255,215,0,0.4)'
-                    : '1px solid rgba(255,255,255,0.1)',
-                  cursor: room.clickable ? 'pointer' : 'default',
-                  opacity: room.clickable ? 1 : 0.5,
+                  background: selectedRooms.has(room.id) ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.08)',
+                  border: selectedRooms.has(room.id) ? '1px solid rgba(239,68,68,0.7)' : '1px solid rgba(255,215,0,0.4)',
+                  cursor: 'pointer',
                   backdropFilter: 'blur(6px)',
                 }}
               >
                 <div className="w-5 h-5 rounded flex-shrink-0"
                   style={{ backgroundColor: room.color, border: '1px solid rgba(255,255,255,0.5)' }}/>
                 <span className="text-sm font-semibold" style={{ color: '#f0f4ff' }}>{room.name}</span>
-                {room.clickable && <span className="ml-auto text-xs" style={{ color: '#22c55e' }}>●</span>}
+                <span className="ml-auto text-xs" style={{ color: '#22c55e' }}>●</span>
               </div>
             ))}
           </div>

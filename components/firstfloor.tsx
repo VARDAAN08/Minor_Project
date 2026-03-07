@@ -20,11 +20,11 @@ function Firstfloor({ setFloor }: { setFloor: (floor: 'minus1' | 'ground' | 'fir
 
   const rooms: Room[] = [
     { id: 'cl9',            name: 'CL 9',         x: 20,  y: 20,  width: 80,  height: 70,  color: '#f3e5f5', clickable: true },
-    { id: 'hr-office',      name: 'HR Office',    x: 110, y: 20,  width: 60,  height: 35,  color: '#fff3e0', clickable: true },
-    { id: 'placement-cell', name: 'T & P Cell',   x: 110, y: 55,  width: 60,  height: 35,  color: '#fff3e0', clickable: true },
-    { id: 'washroom-boys',  name: 'BW',           x: 180, y: 20,  width: 50,  height: 35,  color: '#e0f2f1', clickable: true },
-    { id: 'washroom-girls', name: 'GW',           x: 180, y: 55,  width: 32,  height: 35,  color: '#fce4ec', clickable: true },
-    { id: 'stair-bw',       name: 'Stair',        x: 212, y: 55,  width: 18,  height: 35,  color: '#d4af37', isStair: true, clickable: true },
+    { id: 'hr-office',      name: 'HR Office',    x: 110, y: 20,  width: 60,  height: 35,  color: '#fff3e0', clickable: false},
+    { id: 'placement-cell', name: 'T & P Cell',   x: 110, y: 55,  width: 60,  height: 35,  color: '#fff3e0', clickable: false },
+    { id: 'washroom-boys',  name: 'BW',           x: 180, y: 20,  width: 50,  height: 35,  color: '#e0f2f1', clickable: false },
+    { id: 'washroom-girls', name: 'GW',           x: 180, y: 55,  width: 32,  height: 35,  color: '#fce4ec', clickable: false},
+    { id: 'stair-bw',       name: 'Stair',        x: 212, y: 55,  width: 18,  height: 35,  color: '#d4af37', isStair: true, clickable: false},
     { id: 'cl10-11',        name: 'CL 10 & 11',   x: 250, y: 10,  width: 160, height: 37,  color: '#f3e5f5', clickable: true },
     { id: 'tr1',            name: 'TR 1',         x: 250, y: 50,  width: 68,  height: 35,  color: '#e3f2fd', clickable: true },
     { id: 'tr2',            name: 'TR 2',         x: 320, y: 50,  width: 68,  height: 35,  color: '#e3f2fd', clickable: true },
