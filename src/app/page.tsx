@@ -36,6 +36,7 @@ function Page() {
   }
 
   return (
+    <>
     <div className='h-screen w-screen flex flex-col bg-neutral-950'>
       
       {/* Top Navigation Bar */}
@@ -131,9 +132,9 @@ function Page() {
       </div>
 
       {/* Floor Display */}
-      <div className='flex-1 overflow-hidden relative'>
+      <div className='flex-1 overflow-y-auto relative custom-scrollbar'>
         <div className='absolute inset-0 bg-neutral-950 z-0' />
-        <div className='relative z-10 w-full h-full'>
+        <div className='relative z-10 w-full min-h-full pb-12'>
           {floor === 'minus1' && <MinusOneFloor setFloor={setFloor} />}
           {floor === 'ground' && <FloorGround setFloor={setFloor} />}
           {floor === 'first' && <FirstFloor setFloor={setFloor} />}
@@ -143,6 +144,22 @@ function Page() {
         </div>
       </div>
     </div>
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 215, 0, 0.2);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 215, 0, 0.4);
+        }
+      `}</style>
+    </>
   )
 }
 
