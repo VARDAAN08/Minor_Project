@@ -41,8 +41,10 @@ export async function POST(request: NextRequest) {
     
     const data = validation.data;
     const parsedDate = new Date(data.date + 'T00:00:00Z'); // Store as midnight UTC
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    const now = new Date();
+    const istTime = new Date(now.getTime() + 5.5 * 60 * 60 * 1000);
+    const istDateString = istTime.toISOString().split('T')[0];
+    const today = new Date(istDateString + 'T00:00:00Z');
     
     if (parsedDate < today) {
       return NextResponse.json({ error: 'Cannot book for a past date' }, { status: 400 });

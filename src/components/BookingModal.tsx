@@ -19,10 +19,19 @@ const floorMap: Record<number, string> = {
   [4]: 'Fourth',
 };
 
+import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 export default function BookingModal({ room, onClose, onSuccess }: BookingModalProps) {
+  const router = useRouter();
+  const { data: session } = useSWR('/api/auth/session', fetcher);
+  const isAuthenticated = session?.authenticated;
+
   const [formData, setFormData] = useState({
     teacherName: '',
-    teacherEmail: '',
+    teacherEmail: session?.user?.email || '',
     date: '',
     startTime: '',
     endTime: '',
@@ -37,8 +46,8 @@ export default function BookingModal({ room, onClose, onSuccess }: BookingModalP
       // Reset form when opening for a new room
       setFormData({
         teacherName: '',
-        teacherEmail: '',
-        date: new Date().toISOString().split('T')[0],
+        teacherEmail: session?.user?.email || '',
+        date: new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000).toISOString().split('T')[0],
         startTime: '',
         endTime: '',
         purpose: '',
@@ -46,7 +55,7 @@ export default function BookingModal({ room, onClose, onSuccess }: BookingModalP
     } else {
       setIsVisible(false);
     }
-  }, [room]);
+  }, [room, session]);
 
   if (!room) return null;
 
@@ -91,7 +100,7 @@ export default function BookingModal({ room, onClose, onSuccess }: BookingModalP
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Room booked successfully!');
+        toast.success('Room booked successfully! Awaiting approval.');
         onSuccess();
         handleClose();
       } else if (response.status === 409) {
@@ -134,6 +143,25 @@ export default function BookingModal({ room, onClose, onSuccess }: BookingModalP
             <X size={24} />
           </button>
         </div>
+
+        {!isAuthenticated ? (
+          <div className="p-8 text-center space-y-6">
+            <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-white/10">
+              <Lock size={32} className="text-[#ffd700]/70" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-white mb-2">Authentication Required</h3>
+              <p className="text-white/60">You must be logged in with a valid @juitsolan.in email to book classrooms.</p>
+            </div>
+            <button
+              onClick={() => router.push('/login')}
+              className="w-full bg-gradient-to-r from-[#b8860b] to-[#ffd700] hover:from-[#ffd700] hover:to-[#b8860b] text-slate-900 font-bold py-3 px-6 rounded-xl shadow-lg shadow-yellow-500/20 active:scale-[0.98] transition-all inline-flex justify-center items-center gap-2"
+            >
+              <User size={18} />
+              Login to Book
+            </button>
+          </div>
+        ) : (
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
           {/* Read-only info cards */}
@@ -257,6 +285,7 @@ export default function BookingModal({ room, onClose, onSuccess }: BookingModalP
             )}
           </button>
         </form>
+        )}
       </div>
 
       <style jsx global>{`

@@ -24,7 +24,7 @@ export async function updateRoomOccupancy(roomName: string) {
     date: todayMidnight,
     startTime: { $lte: currentTime },
     endTime: { $gt: currentTime },
-    status: { $in: ['pending', 'approved'] },
+    status: 'approved',
   });
 
   // Update the room's occupied status. We update both by the original name and normalized name to be safe.
@@ -54,7 +54,7 @@ export async function updateAllRoomsOccupancy() {
     date: todayMidnight,
     startTime: { $lte: currentTime },
     endTime: { $gt: currentTime },
-    status: { $in: ['pending', 'approved'] },
+    status: 'approved',
   }).toArray();
 
   const occupiedRoomNames = activeBookings.map(b => b.classroomName);

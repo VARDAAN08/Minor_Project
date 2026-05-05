@@ -21,3 +21,11 @@ export interface IBooking {
   status: 'pending' | 'approved' | 'rejected';
   createdAt: Date;
 }
+
+export interface IOtp {
+  _id?: ObjectId;
+  email: string;
+  otp: string;
+  createdAt: Date;
+  expiresAt: Date;
+}
