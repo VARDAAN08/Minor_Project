@@ -1,8 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 async function main() {
-  const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/EduNav";
-  const client = new MongoClient(uri);
+  const client = new MongoClient(process.env.MONGODB_URI);
 
   try {
     await client.connect();

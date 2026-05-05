@@ -1,9 +1,8 @@
 
-const MONGODB_URI = 'mongodb+srv://vardaandwivedi8_db_user:var123@vardaan.keemc1r.mongodb.net/?appName=vardaan';
 const { MongoClient } = require('mongodb');
 
 async function test() {
-    const client = new MongoClient(MONGODB_URI);
+    const client = new MongoClient(process.env.MONGODB_URI);    
     try {
         await client.connect();
         const db = client.db(); // Default DB
